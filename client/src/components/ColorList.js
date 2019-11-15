@@ -7,9 +7,38 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [addColor, setAddColor] = useState(initialColor);
+
+  const updateColorHexCode = (e) => {
+    setAddColor({
+      ...addColor,
+      code: { hex: e.target.value }
+    });
+  }
+
+  const updateColorName = (e) => {
+    setAddColor({
+      ...addColor,
+      color: e.target.value
+    });
+  }
+
+  const handleSubmit = (e) => {
+    console.log(e);
+    console.log(addColor)
+    e.preventDefault();
+    api()
+      .post('/api/colors', addColor)
+      .then(() => {
+        api()
+          .get('/api/colors')
+          .then(res => updateColors(res.data))
+          .catch(err => console.log(err))
+      })
+
+  }
 
   const editColor = color => {
     setEditing(true);
@@ -28,7 +57,7 @@ const ColorList = ({ colors, updateColors }) => {
         setEditing(false);
       })
       .catch(err => {
-        console.log(err)
+        // console.log(err)
       })
   };
 
@@ -45,7 +74,7 @@ const ColorList = ({ colors, updateColors }) => {
         setEditing(false);
       })
       .catch(err => {
-        console.log(err)
+        // console.log(err)
       })
   };
 
@@ -105,6 +134,27 @@ const ColorList = ({ colors, updateColors }) => {
       )}
       <div className="spacer" />
       {/* stretch - build another form here to add a color */}
+      <h3>Add Colors Here!</h3>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="color"
+          value={addColor.color}
+          onChange={updateColorName}
+
+          placeholder="New Color Name"
+        />
+
+        <input
+          type="text"
+          name="code"
+          value={addColor.code.hex}
+          onChange={updateColorHexCode}
+          placeholder="Color Hex Code"
+
+        />
+        <button type='submit'>Add Color</button>
+      </form>
     </div>
   );
 };
