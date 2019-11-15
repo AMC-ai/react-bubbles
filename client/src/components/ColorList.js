@@ -33,8 +33,7 @@ const ColorList = ({ colors, updateColors }) => {
   };
 
 
-  const deleteColor = (e, color) => {
-    e.preventDefault();
+  const deleteColor = (color) => {
     api()
       .delete(`/api/colors/${color.id}`)
       .then(() => {
