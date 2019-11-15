@@ -24,7 +24,7 @@ function Login(props) {
       .post('/api/login', data)
       .then(res => {
         // console.log(res.data)
-        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('token', res.data.payload)
         props.history.push('/bubblepage')
       })
       .catch(err => {
@@ -34,25 +34,28 @@ function Login(props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && <div className="error">{error}</div>}
+    <>
+      <h1 className="welcome-login">Welcome to the Bubble App!</h1>
+      <form onSubmit={handleSubmit}>
+        {error && <div className="error">{error}</div>}
 
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={data.username}
-        onChange={handleChange} />
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={data.username}
+          onChange={handleChange} />
 
-      <input
-        type="password"
-        name="password"
-        placeholder="password"
-        value={data.password}
-        onChange={handleChange} />
+        <input
+          type="password"
+          name="password"
+          placeholder="password"
+          value={data.password}
+          onChange={handleChange} />
 
-      <button type='submit'>Log In</button>
-    </form>
+        <button type='submit'>Log In</button>
+      </form>
+    </>
   )
 }
 
